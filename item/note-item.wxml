@@ -1,0 +1,24 @@
+<!--
+content: string
+id: string
+status: int
+showRemove: boolean
+-->
+
+<template name="noteItem">
+  <view class="note-item" 
+  id="{{id}}" 
+  data-id="{{id}}" 
+  data-content="{{content}}" 
+  data-status="{{status}}" 
+  data-show-remove="{{showRemove}}"
+  catchlongtap="onLongClick"
+  catchtap="onItemClick">
+    <text>{{content}}</text>
+    <icon class="note-remove" 
+    data-id="{{id}}" 
+  data-content="{{content}}" 
+  data-status="{{status}}" 
+  wx:if="{{showRemove}}" type='cancel' size='40' color='red' catchtap="onRemove"/>
+  </view>
+</template>

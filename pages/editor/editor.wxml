@@ -1,0 +1,19 @@
+<!--pages/editor/editor.wxml-->
+<!--<textarea id="editor" placeholder="hello world" value="{{'edit' + content}}" wx:if="{{isEditMode}}" class="editor view-note"/>
+<text id="view-note" class="view-note" wx:else>{{"view " + content}}</text>-->
+
+<view>
+
+<textarea id="editor" 
+bindinput="onModify"
+auto-height=true
+placeholder="文字会自动保存" 
+auto-focus="{{isEditMode}}"
+focus="{{isEditMode}}"
+value="{{content}}" 
+disabled="{{!isEditMode}}" 
+class="editor view-note"/>
+
+<view wx:if="{{!isEditMode}}" id="edit-note" class="edit-note" bindtap="onEditNote">笔</view>
+
+</view>

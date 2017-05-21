@@ -1,0 +1,12 @@
+<import src='../../item/note-item.wxml' />
+<block class="container">
+  <!--<view id="top-item" class="note-item">
+    <text>{{topItem.content}}</text>
+  </view>-->
+
+  <view id="list-container" class="list-container">
+    <template is='noteItem' data="{{...item}}" wx:key="{{item.id}}" wx:for="{{noteList}}" />
+  </view>
+
+  <view id="add-note" class="add-note" catchtap="onAddNote">+</view>
+</block>
