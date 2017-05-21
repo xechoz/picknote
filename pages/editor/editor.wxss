@@ -1,6 +1,6 @@
 /* pages/editor/editor.wxss */
 
-@import "/css/common.wxss";
+@import "../css/common.wxss";
 
 page {
   width: 100%;
@@ -10,27 +10,43 @@ page {
 .editor {
 }
 
+.editor::before {
+  position: absolute;
+  left: .5em;
+  top: 1em;
+  content: '';
+  width: 2px;
+  height: 1em;
+  background: #09bb07;
+}
+
 .view-note {
+  bottom: 10em;
+  position: fixed;
+  top: 0;
   width: 100%;
+  height: 100%;
   box-sizing: border-box;
   display: block;
   padding: 1em;
-  font-size: 17pt;
+  padding-bottom: 6em;  
+  font-size: 14pt;
 }
 
 .edit-note {
+  z-index: 9;
   position: fixed;
   right: 5%;
   bottom: 5%;
-  width: 2em;
-  height: 2em;
+  width: 3em;
+  height: 3em;
   box-sizing: border-box;
   border: 1px solid rgb(9, 187, 7);
-  border-radius: 1em;
+  border-radius: 1.5em;
   background: white;
   text-align: center;
   vertical-align: middle;
   color: rgb(9, 187, 7);
-  line-height: 2em;
+  line-height: 3em;
   font-size: 1em;
 }

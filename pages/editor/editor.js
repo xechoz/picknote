@@ -128,14 +128,17 @@ Page({
 
   clickCount: 0, 
   checkDoubleClick(event) {
+    console.log(event);
     this.clickCount++;
+    console.log('count ' + this.clickCount);
 
     if (this.clickCount >= 2 && !this.data.isEditMode) {
-      this.onEditMode();
+      this.onEditNote();
     }
 
+    let that = this;
     setTimeout(() => {
-      this.clickCount = 0;
+      that.clickCount = 0;
     }, 300);
   }
 })

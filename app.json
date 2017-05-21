@@ -6,9 +6,9 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#09bb07",
     "navigationBarTitleText": "Pick Note",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"white"
   },
 
   "debug": true

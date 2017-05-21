@@ -40,6 +40,10 @@ let db = {
 
   saveNote(note) {
     this.cache.isNoteModified = true;
+    this.cache.noteIds = this.cache.noteIds.filter(id => {
+      return id != note.id;
+    });
+
     this.cache.noteIds.unshift(note.id);
 
     this.cache.notes = this.cache.notes.filter(item => {
