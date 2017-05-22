@@ -1,5 +1,5 @@
 <import src='../../item/note-item.wxml' />
-<view class="container">
+<view class="container" bindtap="onContainerTouch">
   <view id="top-item" class="note-item" wx:if="{{noteList.length <= 0}}">
     <text>{{topItem.content}}</text>
   </view>

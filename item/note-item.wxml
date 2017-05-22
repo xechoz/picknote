@@ -6,19 +6,24 @@ showRemove: boolean
 -->
 
 <template name="noteItem">
-  <view class="note-item" 
+  <view class="note-item {{showRemove? 'show-remove': 'hide-remove'}}" 
   id="{{id}}" 
   data-id="{{id}}" 
   data-content="{{content}}" 
   data-status="{{status}}" 
   data-show-remove="{{showRemove}}"
-  catchlongtap="onLongClick"
+  bindtouchstart="onPress"
+  bindtouchend="onPressEnd"
+  catchlongtap="onLongPress"
   catchtap="onItemClick">
     <text>{{content}}</text>
-    <icon class="note-remove" 
+
+    <view class="note-remove" 
     data-id="{{id}}" 
   data-content="{{content}}" 
   data-status="{{status}}" 
-  wx:if="{{showRemove}}" type='cancel' size='40' color='red' catchtap="onRemove"/>
+   catchtap="onRemove">
+   删除   
+   </view>
   </view>
 </template>

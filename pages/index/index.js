@@ -8,10 +8,12 @@ Page({
   data: {
     topItem: {
       content: '最新的笔记会显示在顶部，长按删除'
-    }, 
+    },
     noteList: [
     ],
-    userInfo: {}
+    userInfo: {},
+    pressStartAt: 0,
+    pressEndAt: 0
   },
   //事件处理函数
   bindViewTap: function () {
@@ -22,7 +24,6 @@ Page({
   onLoad: function () {
     console.log('onLoad')
     var that = this;
-    this.updateLatestNoteUi();
     this.updateListUi();
   },
 
@@ -32,28 +33,31 @@ Page({
 
   onShow() {
     if (db.cache.isNoteModified) {
-      this.updateLatestNoteUi();
       this.updateListUi();
     }
   },
 
   onItemClick: function (event) {
-    console.log(event);
-    let note = event.currentTarget.dataset;
-    
-    if (note.showRemove) {
-      note.showRemove = false;
-      let item = this.getNote(note.id);
-      item.showRemove = false;
-      this.setData({
-        noteList: this.data.noteList
-      });
-    } else {
-      noteItem.onItemClick(note);
+    console.log(this.data);
+    console.log('this.data.pressEndAt - this.data.pressStartAt=' + (this.data.pressEndAt - this.data.pressStartAt));
+    if (this.data.pressEndAt - this.data.pressStartAt < 200) {
+      console.log(event);
+      let note = event.currentTarget.dataset;
+
+      if (note.showRemove) {
+        note.showRemove = false;
+        let item = this.getNote(note.id);
+        item.showRemove = false;
+        this.setData({
+          noteList: this.data.noteList
+        });
+      } else {
+        noteItem.onItemClick(note);
+      }
     }
   },
 
-  onLongClick: function(event) {
+  onLongPress: function (event) {
     console.log(event);
     let note = event.currentTarget.dataset;
 
@@ -66,7 +70,26 @@ Page({
     console.log(this.data.noteList);
   },
 
-  onRemove: function(event) {
+  onPress(event) {
+    this.data.pressStartAt = event.timeStamp;
+  },
+
+  onPressEnd(event) {
+    this.data.pressEndAt = event.timeStamp;
+  },
+
+  onContainerTouch(event) {
+    console.log(event);
+    this.data.noteList.forEach(item => {
+      item.showRemove = false;
+    });
+
+    this.setData({
+      noteList: this.data.noteList
+    })
+  },
+
+  onRemove: function (event) {
     let id = event.currentTarget.dataset.id;
     console.log('onRemove ' + id);
     let note = this.getNote(id);
@@ -74,20 +97,20 @@ Page({
 
     if (note) {
       db.removeNote(id)
-      .then(result => {
-        this.data.noteList = this.data.noteList.filter(item => {
-          return item.id != id;
-        });
+        .then(result => {
+          this.data.noteList = this.data.noteList.filter(item => {
+            return item.id != id;
+          });
 
-        this.setData({
-          noteList: this.data.noteList
-        });
-      })
-      .catch(error => {
+          this.setData({
+            noteList: this.data.noteList
+          });
+        })
+        .catch(error => {
           wx.showToast({
             title: '' + error,
           })
-      });
+        });
     }
   },
 
@@ -100,25 +123,13 @@ Page({
 
   getNote(id) {
     console.log(id);
-    for (let i=0, size=this.data.noteList.length; i<size; i++) {
+    for (let i = 0, size = this.data.noteList.length; i < size; i++) {
       let note = this.data.noteList[i];
       console.log(note);
       if (note && note.id == id) {
         return note;
       }
     }
-  },
-
-  updateLatestNoteUi() {
-    let that = this;
-    db.getLatestNote()
-      .then(note => {
-        console.log(note);
-        that.data.topItem = note;
-        that.updateUi();
-      }, error => {
-        console.log(error);
-      });
   },
 
   updateListUi() {
@@ -135,7 +146,7 @@ Page({
         wx.showToast({
           title: '' + error
         })
-      });  
+      });
   },
 
   updateUi() {

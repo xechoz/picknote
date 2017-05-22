@@ -49,10 +49,19 @@
 }
 
 .note-remove {
-  top: 2em;
-  display: block;
-  text-align: center;
-  margin: 0 auto;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: 4em;
+  height: 100%;
+  background: #e64340;
+  font-size: 1.25em;
+  display: flex;
+  color: white;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: .5em;
+  padding-left: .5em;
 }
 
 .add-note {
@@ -71,6 +80,16 @@
   line-height: 1.5em;
   font-size: 2em;
   z-index: 9;
+}
+
+.show-remove {
+  transition: 0.3s;
+  transform: translateX(-4em);
+}
+
+.hide-remove {
+  transition: 0.3s;
+  transform: translateX(0);
 }
 
 #top-item {
