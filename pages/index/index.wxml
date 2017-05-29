@@ -1,12 +1,11 @@
 <import src='../../item/note-item.wxml' />
 <view class="container" bindtap="onContainerTouch">
-  <view id="top-item" class="note-item" wx:if="{{noteList.length <= 0}}">
-    <text>{{topItem.content}}</text>
-  </view>
 
   <view id="list-container" class="list-container">
     <template is='noteItem' data="{{...item}}" wx:key="{{item.id}}" wx:for="{{noteList}}" />
   </view>
 
-  <view id="add-note" class="add-note" catchtap="onAddNote">+</view>
+  <view id="add-note" class="add-note icon-pencil" catchtap="onAddNote">
+
+  </view>
 </view>

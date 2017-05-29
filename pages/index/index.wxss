@@ -1,5 +1,6 @@
 /**index.wxss**/
 @import "../css/common.wxss";
+@import "../css/item.wxss";
 
 .container {
   width: 100%;
@@ -34,7 +35,7 @@
 }
 
 .note-item:first-of-type {
-  min-height: 6em;
+  min-height: 5em;
 }
 
 .note-item::before {
@@ -68,32 +69,31 @@
   position: fixed;
   right: 5%;
   bottom: 5%;
-  width: 1.5em;
-  height: 1.5em;
+  width: 4em;
+  height: 4em;
   box-sizing: border-box;
   border: 1px solid rgb(9, 187, 7);
-  border-radius: 1em;
+  border-radius: 2em;
   background: white;
   text-align: center;
   vertical-align: middle;
   color: rgb(9, 187, 7);
-  line-height: 1.5em;
-  font-size: 2em;
+  line-height: 4em;
   z-index: 9;
 }
 
 .show-remove {
-  transition: 0.3s;
+  transition: 0.3s ease;
   transform: translateX(-4em);
 }
 
 .hide-remove {
-  transition: 0.3s;
+  transition: 0.3s ease;
   transform: translateX(0);
 }
 
 #top-item {
-  display: block;
+  display: none;
   box-sizing: border-box;
   min-height: 6em;
   margin: 0 .25em;
@@ -102,4 +102,15 @@
   font-size: 18pt;
   align-content: center;
   width: auto;
+}
+
+.popup-backgroup {
+  content: '';
+  position: fixed;
+  width: 100%;
+  z-index: 11;
+  left: 0;
+  top: 0;
+  height: 200%;
+  background: green;
 }

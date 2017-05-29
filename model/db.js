@@ -17,13 +17,13 @@ let db = {
       } else {
         db.getNoteIds()
           .then(ids => {
-            console.debug('ids ' + JSON.stringify(ids));
             db.getNotes(ids)
               .then(notes => {
                 db.cache.notes = notes;
                 resolve(notes);
               });
-          });
+          }, reject)
+          .catch(reject);
       }
     })
   },
@@ -51,7 +51,6 @@ let db = {
     });
 
     this.cache.notes.unshift(note);
-    console.log(`notes push ${JSON.stringify(db.cache)}`);
     note.createdAt = Date.now();
 
     return new Promise((resolve, reject) => {
@@ -77,7 +76,6 @@ let db = {
   getNoteIds() {
     return new Promise((resolve, reject) => {
       if (db.cache.noteIds && db.cache.noteIds.length > 0) {
-        console.debug('getNoteIds from cache ' + JSON.stringify(db.cache.noteIds));
         resolve(db.cache.noteIds);
       } else {
         wx.getStorage({
@@ -85,7 +83,6 @@ let db = {
           success: result => {
             let ids = result.data;
             db.cache.noteIds = ids;
-            console.debug(`getNoteIds from db, data: ${JSON.stringify(result)}  ids: ${JSON.stringify(ids)}`);
             resolve(ids);
           },
           fail: reject

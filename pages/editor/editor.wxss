@@ -38,15 +38,15 @@ page {
   position: fixed;
   right: 5%;
   bottom: 5%;
-  width: 3em;
-  height: 3em;
+  width: 4em;
+  height: 4em;
   box-sizing: border-box;
   border: 1px solid rgb(9, 187, 7);
-  border-radius: 1.5em;
+  border-radius: 2em;
   background: white;
   text-align: center;
   vertical-align: middle;
   color: rgb(9, 187, 7);
-  line-height: 3em;
+  line-height: 4em;
   font-size: 1em;
 }

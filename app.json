@@ -1,15 +1,14 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/logs/logs",
     "pages/editor/editor"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#09bb07",
-    "navigationBarTitleText": "Pick Note",
+    "navigationBarTitleText": "我的笔记书",
     "navigationBarTextStyle":"white"
   },
 
-  "debug": true
+  "debug": false
 }

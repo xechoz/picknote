@@ -2,7 +2,7 @@
 
 <textarea id="editor" 
 bindinput="onModify"
-placeholder="文字会自动保存" 
+placeholder="{{placeHolder}}" 
 auto-focus="{{isEditMode}}"
 bindtap="checkDoubleClick"
 focus="{{isEditMode}}"
@@ -10,6 +10,8 @@ value="{{content}}"
 disabled="{{!isEditMode}}" 
 class="editor view-note"/>
 
-<view wx:if="{{!isEditMode}}" id="edit-note" class="edit-note" bindtap="onEditNote">笔</view>
+<view wx:if="{{!isEditMode}}" id="edit-note" class="edit-note" bindtap="onEditNote">
+  <i class="icon-pencil"></i>
+</view>
 
 </block>

@@ -1,5 +1,4 @@
 //index.js
-let noteItem = require('../../item/note-item.js');
 let db = require('../../model/db.js');
 
 //获取应用实例
@@ -7,13 +6,14 @@ var app = getApp()
 Page({
   data: {
     topItem: {
-      content: '最新的笔记会显示在顶部，长按删除'
+      content: '最新的笔记会显示在顶部, \n文字会自动保存'
     },
     noteList: [
     ],
     userInfo: {},
     pressStartAt: 0,
-    pressEndAt: 0
+    pressEndAt: 0,
+    isPopup: false
   },
   //事件处理函数
   bindViewTap: function () {
@@ -22,13 +22,11 @@ Page({
     })
   },
   onLoad: function () {
-    console.log('onLoad')
     var that = this;
     this.updateListUi();
   },
 
   onReady: function () {
-    console.log('onReady');
   },
 
   onShow() {
@@ -38,27 +36,30 @@ Page({
   },
 
   onItemClick: function (event) {
-    console.log(this.data);
-    console.log('this.data.pressEndAt - this.data.pressStartAt=' + (this.data.pressEndAt - this.data.pressStartAt));
-    if (this.data.pressEndAt - this.data.pressStartAt < 200) {
-      console.log(event);
-      let note = event.currentTarget.dataset;
+    if (this.data.isPopup == false) {
+      if (this.data.pressEndAt - this.data.pressStartAt < 200) {
+        let note = event.currentTarget.dataset;
 
-      if (note.showRemove) {
-        note.showRemove = false;
-        let item = this.getNote(note.id);
-        item.showRemove = false;
-        this.setData({
-          noteList: this.data.noteList
-        });
-      } else {
-        noteItem.onItemClick(note);
+        if (note.showRemove) {
+          note.showRemove = false;
+          let item = this.getNote(note.id);
+          item.showRemove = false;
+          this.setData({
+            noteList: this.data.noteList
+          });
+        } else {
+          getApp().globalData.currentNote = note;
+          wx.navigateTo({
+            url: `/pages/editor/editor?id=${note.id}&isEdit=0`,
+          })
+        }
       }
+    } else {
+      this.hidePopup();
     }
   },
 
   onLongPress: function (event) {
-    console.log(event);
     let note = event.currentTarget.dataset;
 
     let item = this.getNote(note.id);
@@ -66,8 +67,6 @@ Page({
     this.setData({
       noteList: this.data.noteList
     });
-
-    console.log(this.data.noteList);
   },
 
   onPress(event) {
@@ -79,31 +78,54 @@ Page({
   },
 
   onContainerTouch(event) {
-    console.log(event);
     this.data.noteList.forEach(item => {
       item.showRemove = false;
     });
 
     this.setData({
       noteList: this.data.noteList
-    })
+    });
+
+    this.hidePopup();
+  },
+
+  onMore(event) {
+    if (this.data.isPopup == true) {
+      this.hidePopup();
+    } else {
+      this.data.isPopup = true;
+      let note = event.currentTarget.dataset;
+      let item = this.getNote(note.id);
+      this.currentId = note.id;
+      item.showMore = true;
+
+      this.setData({
+        noteList: this.data.noteList,
+        showMore: true
+      });
+    }
   },
 
   onRemove: function (event) {
+    this.currentId = 0;
     let id = event.currentTarget.dataset.id;
-    console.log('onRemove ' + id);
     let note = this.getNote(id);
-    console.log(note);
+    note.isRemoved = true;
+    this.setData({
+      noteList: this.data.noteList
+    });
 
+    let that = this;
     if (note) {
       db.removeNote(id)
         .then(result => {
-          this.data.noteList = this.data.noteList.filter(item => {
+          let temp;
+          that.data.noteList = that.data.noteList.filter(item => {
             return item.id != id;
           });
 
-          this.setData({
-            noteList: this.data.noteList
+          that.setData({
+            noteList: that.data.noteList
           });
         })
         .catch(error => {
@@ -115,17 +137,18 @@ Page({
   },
 
   onAddNote(event) {
-    console.log(event);
-    wx.navigateTo({
-      url: `/pages/editor/editor?isEdit=1`,
-    })
+    if (this.data.isPopup == false) {
+      wx.navigateTo({
+        url: `/pages/editor/editor?isEdit=1`,
+      })
+    } else {
+      this.hidePopup();
+    }
   },
 
   getNote(id) {
-    console.log(id);
     for (let i = 0, size = this.data.noteList.length; i < size; i++) {
       let note = this.data.noteList[i];
-      console.log(note);
       if (note && note.id == id) {
         return note;
       }
@@ -137,21 +160,70 @@ Page({
 
     db.getAllNote()
       .then(notes => {
+        if (!notes || notes.length == 0) {
+          this.checkNoteListEmpty();
+        } else {
+
         data.noteList = notes;
-        console.log(`noteList ${JSON.stringify(data.noteList)}`);
         this.updateUi();
+        }
+      }, error => {
+        this.checkNoteListEmpty();
       })
       .catch(error => {
-        console.error(error);
-        wx.showToast({
-          title: '' + error
-        })
+        this.checkNoteListEmpty();
       });
   },
 
   updateUi() {
-    console.log('updateUi');
-    console.log(this.data);
     this.setData(this.data);
+  },
+
+  checkNoteListEmpty() {
+    if (this.data.noteList.length == 0) {
+      this.data.noteList.push({
+        id: 'id_' + 0,
+        content: '最新的笔记会显示在顶部, \n\n文字会自动保存',
+        status: 0
+      });
+
+      this.setData({
+        noteList: this.data.noteList
+      })
+    }
+  },
+
+  hidePopup(event) {
+    this.data.isPopup = false;
+
+    if (this.currentId && this.currentId != 0) {
+      let note = this.getNote(this.currentId);
+
+      note.showMore = false;
+      this.setData({
+        noteList: this.data.noteList,
+        showMore: false
+      });
+
+      this.currentId = 0;
+    }
+  },
+
+  onShareAppMessage() {
+    let path = this.currentId > 0 ? `/pages/editor/editor?id=${this.currentId}&isEdit=0` :
+      '/pages/index/index';
+    return {
+      title: '我的笔记书',
+      path,
+      success() {
+
+      },
+      fail() {
+
+      },
+      complete() {
+
+      }
+    };
   }
 })

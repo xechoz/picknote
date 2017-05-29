@@ -1,29 +1,26 @@
-<!--
-content: string
-id: string
-status: int
-showRemove: boolean
--->
-
 <template name="noteItem">
-  <view class="note-item {{showRemove? 'show-remove': 'hide-remove'}}" 
+  <view class="note-item {{showRemove? 'show-remove': 'hide-remove'}} {{isRemoved? 'removed': ''}}" 
   id="{{id}}" 
   data-id="{{id}}" 
   data-content="{{content}}" 
   data-status="{{status}}" 
-  data-show-remove="{{showRemove}}"
-  bindtouchstart="onPress"
+  data-show-remove="{{showRemove}}" 
+  bindtouchstart="onPress" 
   bindtouchend="onPressEnd"
-  catchlongtap="onLongPress"
   catchtap="onItemClick">
     <text>{{content}}</text>
 
-    <view class="note-remove" 
+    <view class="item-more" 
     data-id="{{id}}" 
-  data-content="{{content}}" 
-  data-status="{{status}}" 
-   catchtap="onRemove">
-   删除   
-   </view>
+    catchtap="onMore">
+      <i class='icon-ellipsis-vert'></i>
+      <view class="popup" wx:if="{{showMore}}" >
+        <text  
+        data-id="{{id}}" 
+          class="popup-item"
+          catchtap="onRemove">删除</text>
+      </view>
+    </view>
+
   </view>
 </template>
