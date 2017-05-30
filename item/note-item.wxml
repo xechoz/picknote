@@ -22,5 +22,6 @@
       </view>
     </view>
 
+    <view class="item-date">{{formatDate}}</view>
   </view>
 </template>

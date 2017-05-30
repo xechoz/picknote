@@ -156,6 +156,7 @@ Page({
   },
 
   updateListUi() {
+    console.debug(this.data);
     let data = this.data;
 
     db.getAllNote()
@@ -164,6 +165,13 @@ Page({
           this.checkNoteListEmpty();
         } else {
 
+        let temp = new Date();
+        const INTERVAL = (8 * 60 * 60 * 1000);
+        notes.forEach(item => {
+          temp.setTime(item.createdAt + INTERVAL);
+          item.formatDate = temp.getUTCFullYear() + "." + (1+ temp.getMonth()) + "." +
+                            temp.getUTCDate();
+        });
         data.noteList = notes;
         this.updateUi();
         }
