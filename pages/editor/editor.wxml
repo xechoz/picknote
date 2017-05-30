@@ -1,17 +1,18 @@
-<block class="container">
+<view class="container">
 
-<textarea id="editor" 
+<textarea
 bindinput="onModify"
 placeholder="{{placeHolder}}" 
 auto-focus="{{isEditMode}}"
 bindtap="checkDoubleClick"
 focus="{{isEditMode}}"
 value="{{content}}" 
-disabled="{{!isEditMode}}" 
-class="editor view-note"/>
+disabled="{{!isEditMode}}"
+placeholder-class="{{content.length > 0? 'note-not-empty': 'note-empty'}}" 
+class="editor"/>
 
 <view wx:if="{{!isEditMode}}" id="edit-note" class="edit-note" bindtap="onEditNote">
   <i class="icon-pencil"></i>
 </view>
 
-</block>
+</view>

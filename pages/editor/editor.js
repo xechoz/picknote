@@ -21,24 +21,15 @@ Page({
     this.data.id = id || 'id_' + Date.now();
     this.data.content = note.content || '';
     this.data.isEditMode = isEdit;
-  
+    this.data.placeHolder = this.data.content.length == 0 ? '文字会自动保存' : this.data.content;
+
     this.oldContent = this.data.content;
     this.currentContent = this.data.content;
-
-    this.setData({
-      id: this.data.id,
-      content: this.data.content,
-      isEditMode: isEdit,
-      placeHolder: this.data.content.length == 0 ? '文字会自动保存' : this.data.content
-    });
+    this.setData(this.data);    
   },
 
   onShow() {
-    this.setData({
-      id: this.data.id,
-      content: this.data.content,
-      isEditMode: this.data.isEdit
-    });
+    // this.setData(this.data);    
   },
 
   onHide: function () {

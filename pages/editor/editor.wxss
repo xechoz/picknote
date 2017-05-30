@@ -1,13 +1,17 @@
-/* pages/editor/editor.wxss */
-
 @import "../css/common.wxss";
 
-page {
+.editor {
+  bottom: 10em;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-}
-
-.editor {
+  box-sizing: border-box;
+  display: block;
+  padding: 1em;
+  padding-bottom: 6em;  
+  font-size: 14pt;
 }
 
 .editor::before {
@@ -18,19 +22,6 @@ page {
   width: 2px;
   height: 1em;
   background: #09bb07;
-}
-
-.view-note {
-  bottom: 10em;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  display: block;
-  padding: 1em;
-  padding-bottom: 6em;  
-  font-size: 14pt;
 }
 
 .edit-note {
@@ -49,4 +40,12 @@ page {
   color: rgb(9, 187, 7);
   line-height: 4em;
   font-size: 1em;
+}
+
+.note-empty {
+  color: #888888;
+}
+
+.note-not-empty {
+  color: black;
 }
